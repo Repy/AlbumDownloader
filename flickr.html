@@ -12,8 +12,8 @@ var Param = function(str){
 	var sp = str.split("&");
 	var map = {};
 	for(var i = 0; i < sp.length; i++){
-		var kv = sp[i].split("=",1);
-		map[kv[0]]=kv[1];
+		var kv = sp[i].split("=");
+		map[shift(kv)]=kv.join("=");
 	}
 	return map;
 }
