@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Album Downloader</title>
+</head>
+<body>
+<form>Flickr(Photoset ID): <input type="text" name="id" value=""><imput type="submit" value="Go"></form>
+<div id="photos"></div>
+<script>
+var Param = function(str){
+	var sp = str.split("&");
+	var map = {};
+	for(var i = 0; i < sp.length; i++){
+		var kv = sp[i].split("=",1);
+		map[kv[0]]=kv[1];
+	}
+}
+var HttpGet = function(url,func){
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', url, true);
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState === 4 && xhr.status === 200){
+			func(JSON.parse(xhr.responseText));
+		}
+	}
+	xhr.send(null);
+}
+if (document.location.search !== ""){
+	var param = Param(document.location.search.substring(1));
+	if(param.id){
+		var sid = param.id;
+		var xhr = new XMLHttpRequest();
+		HttpGet("https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=dbe0ad6f572dd896b0c78eca94e6997f&photoset_id=" + sid + "&extras=url_o,url_l&format=json&nojsoncallback=1", function (data) {
+			var html = "";
+			for (var i = 0; i < data.photoset.photo.length; i++) html += '<img src="' + (data.photoset.photo[i].url_o || data.photoset.photo[i].url_l) + '" />';
+			newwin.document.open();
+			newwin.document.write("<html><body>");
+			newwin.document.write(html);
+			newwin.document.write("</body></html>");
+			newwin.document.close();
+		});
+	}
+}
+</script>
+</body>
+</html> 
