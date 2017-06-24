@@ -35,11 +35,7 @@ if (document.location.search !== ""){
 		HttpGet("https://api.flickr.com/services/rest/?method=flickr.photosets.getPhotos&api_key=dbe0ad6f572dd896b0c78eca94e6997f&photoset_id=" + sid + "&extras=url_o,url_l&format=json&nojsoncallback=1", function (data) {
 			var html = "";
 			for (var i = 0; i < data.photoset.photo.length; i++) html += '<img src="' + (data.photoset.photo[i].url_o || data.photoset.photo[i].url_l) + '" />';
-			newwin.document.open();
-			newwin.document.write("<html><body>");
-			newwin.document.write(html);
-			newwin.document.write("</body></html>");
-			newwin.document.close();
+			document.getElementById("photos").innerHTML = html;
 		});
 	}
 }
