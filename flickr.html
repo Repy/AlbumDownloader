@@ -13,7 +13,7 @@ var Param = function(str){
 	var map = {};
 	for(var i = 0; i < sp.length; i++){
 		var kv = sp[i].split("=");
-		map[shift(kv)]=kv.join("=");
+		map[kv.shift()]=kv.join("=");
 	}
 	return map;
 }
